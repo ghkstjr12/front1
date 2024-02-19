@@ -1,0 +1,241 @@
+package project_5;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+
+public class OrderItemProgram {
+	static Scanner sc = new Scanner(System.in);
+	static ArrayList<Product> list = new ArrayList<>();
+	static ArrayList<Review> reviews = new ArrayList<>();
+	public static void main(String[] args) {
+		ProductFunction pf = new ProductFunction();
+		ReviewFunction rf = new ReviewFunction();
+		int menu;
+		int num=0;
+		boolean sw;
+		boolean show = false;
+		product();
+		reviews();
+		while(true) {
+			System.out.println("\t\t\t~환영합니다~");
+			System.out.println("=========================================================");
+			System.out.println("메뉴 :: 1.상품 조회 | 2.상품 구매 | 3.리뷰 등록 | 4.리뷰 삭제 | 5.종료");
+			System.out.println("---------------------------------------------------------");
+			System.out.print("메뉴를 선택하세요 > ");
+			menu = sc.nextInt();
+			switch(menu) {
+			case 1:
+				pf.productList(list);
+				while(true) {
+					sw=true;
+					System.out.print("상품 상세보기를 진행할까요?(y/n)>");
+					String input = sc.next();
+					if(input.equals("n")) {
+						break;
+					}else if(input.equals("y")) {
+						while(sw) {
+							System.out.print("자세히 보고싶은 상품의 번호를 입력하세요 > ");
+							num = sc.nextInt();
+							sw = pf.check(list,num);
+						}
+						Product detail = list.get(num-1);
+						pf.showList(detail);
+						rf.showReview(reviews, detail, num, show);
+						break;
+					}else {
+						System.out.println("다시 입력해주세요");
+						continue;
+					}
+				}
+				break;
+			case 2:
+				pf.productList(list);
+				sw=true;
+				while(sw) {
+					System.out.print("구매하실 상품의 번호를 입력하세요 > ");
+					num = sc.nextInt();
+					sw = pf.check(list,num);
+				}
+				Product buy = list.get(num-1);
+				pf.buyProduct(buy);
+				break;
+			case 3:
+				pf.productList(list);
+				System.out.print("리뷰를 등록할 상품 번호를 입력하세요 > ");
+				num = sc.nextInt();
+				sc.nextLine();
+				String name = list.get(num-1).getName();
+				System.out.println("["+name+"]"+"에 등록된 리뷰 ▼");
+				show = true;
+				show = rf.showReview(reviews, list.get(num-1), num, show);
+				System.out.print("아이디를 입력하세요 > ");
+				String id = sc.next();
+				sc.nextLine();
+				System.out.print("리뷰 작성 > ");
+				String desc = sc.nextLine();
+				Review cnt;
+				if(reviews.size() > 0) {
+					sw = true;
+					for (int i = 0; i < reviews.size(); i++) {
+						if (name.equals(reviews.get(i).getName())) {
+							cnt = reviews.get(i);
+							cnt.setReview(cnt.getCnt()+" "+id+" : "+desc);
+							cnt.countCnt();
+							sw=false;
+						}
+					}
+					if(sw) {
+						reviews.add(new Review(name)); 
+						cnt = reviews.get(reviews.size()-1);
+						cnt.setReview(cnt.getCnt()+" "+id+" : "+desc);
+						cnt.countCnt();
+					}
+				}else {
+					reviews.add(new Review(name)); 
+					cnt = reviews.get(reviews.size()-1);
+					cnt.setReview(cnt.getCnt()+" "+id+" : "+desc);
+					cnt.countCnt();
+				}
+				System.out.println("리뷰가 등록되었습니다!");
+				break;
+			case 4:
+				pf.productList(list);
+				System.out.print("삭제할 상품 번호를 입력하세요 > ");
+				num = sc.nextInt();
+				sc.nextLine();
+				String name2 = list.get(num-1).getName();
+				System.out.println("["+name2+"]"+"에 등록된 리뷰 ▼");
+				show = true;
+				show = rf.showReview(reviews, list.get(num-1), num, show);
+				System.out.println("삭제할 리뷰의 번호를 입력하세요 >");
+				int reviewNum = sc.nextInt();
+				sc.nextLine();
+				String n = list.get(reviewNum-1).getName();
+				for (int i=0; i<reviews.size(); i++) {
+					if(n.equals(reviews.get(i).getName())){
+						ArrayList<String> r = reviews.get(i).getReview();
+						String num2 = reviewNum + "";
+						System.out.println(num2);
+						
+						for (String re: r) {
+							System.out.println(re.substring(0,1));
+							String qwe = re.substring(0,1);
+							if(num2.equals(qwe)) {
+								r.remove(re);
+								System.out.println(re);
+							}
+						}
+					}
+				}
+				break;
+			case 5:
+				writeToFile();
+				System.exit(0); //종료시 지금까지 수정된 내용 파일에 덮어씀
+				break;
+			default:
+				System.out.println("메뉴를 다시 입력해주세요.");
+				break;
+				
+			}
+		}
+
+	}
+	
+	//상품 객체 생성 함수
+	public static void product() {
+		 // 파일에서 상품목록 읽어오기
+        BufferedReader reader;
+		try {
+			reader = new BufferedReader(new FileReader("res/상품목록.txt"));
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	            // 콤마로 구분된 문자열을 분리하여 상품 이름, 가격, 재고 불러옴
+	            String[] data = line.split(",");
+	           
+	            String name = data[0];
+	            int price = Integer.parseInt(data[1]);
+	            int stock = Integer.parseInt(data[2]);
+	            String desc = data[3];
+	            
+	            list.add(new Product(name, price, stock,desc));
+	        }
+
+		} catch (IOException | NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	}
+
+	//리뷰 불러와서 객체 배열로 만드는 함수
+	public static void reviews() {
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new FileReader("res/리뷰목록.txt"));
+			String line;
+			int index = 0;
+			while ((line = reader.readLine()) != null) {
+				// 콤마로 구분된 문자열을 분리하여 상품 이름, 가격, 재고 불러옴
+				String[] data = line.split(",");
+
+				String name = data[0];
+				reviews.add(new Review(name));
+				for (int i = 1; i < data.length; i++) {
+					reviews.get(index).setReview(data[i]);
+				}
+				index++;
+
+			}
+		} catch (IOException | NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	//리뷰 등록
+	public static void addReview() {
+		
+	}
+	
+	// 수정된 정보 파일에 쓰기 함수
+	public static void writeToFile() {
+		try {
+			FileWriter fw = new FileWriter("res/상품목록.txt");
+			for(Product p : list) {
+				String line = p.getName()+","+p.getPrice()+","+p.getStock()+","+p.getDesc()+"\n";
+				fw.write(line);
+			}
+			fw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	// 수정된 정보 파일에 쓰기 함수
+		public static void writeToFiletwo() {
+			try {
+				FileWriter fw = new FileWriter("res/리뷰목록.txt");
+				for(Product p : list) {
+					String line = p.getName()+","+p.getPrice()+","+p.getStock()+","+p.getDesc()+"\n";
+					fw.write(line);
+				}
+				fw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	
+	
+	
+
+}

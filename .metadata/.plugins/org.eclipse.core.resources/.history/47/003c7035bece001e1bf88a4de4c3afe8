@@ -1,0 +1,108 @@
+package project_5;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class ProductFunction {
+	static Scanner sc = new Scanner(System.in);
+
+	// 상품 목록 함수
+	public static void productList(ArrayList<Product> list) {
+		String formattedNum = String.format("%-8s", "상품번호"); // 이름을 왼쪽 정렬하여 30자리로 맞춤
+		String formattedName = String.format("%-20s", "상품명"); // 가격을 왼쪽 정렬하여 10자리로 맞춤
+		String formattedPrice = String.format("%-10s", "가격"); // 재고를 왼쪽 정렬하여 10자리로 맞춤
+		String formattedStock = String.format("%-10s", "재고"); // 재고를 왼쪽 정렬하여 10자리로 맞춤
+		System.out.println("==========================☆★상품 목록★☆==========================");
+		System.out.println(formattedNum + "\t" + formattedName + "\t" + formattedPrice + "\t" + formattedStock);
+		System.out.println("---------------------------------------------------------------");
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println((i + 1) + "\t   " + list.get(i));
+		}
+		System.out.println("---------------------------------------------------------------");
+	}
+
+	// 상품 상세보기 함수
+	public void showList(Product list) {
+		int num;
+		System.out.println("\n================☆★상세 보기★☆=================");
+		String formattedName2 = String.format("%-20s", list.getName()); // 가격을 왼쪽 정렬하여 10자리로 맞춤
+		String formattedPrice2 = String.format("%-10s", list.getPrice() + "원"); // 재고를 왼쪽 정렬하여 10자리로 맞춤
+		String formattedStock2;
+		if(list.getStock() == 0) {
+			formattedStock2 = String.format("%-10s", "품절");
+		}else {
+			formattedStock2 = String.format("%-10s", list.getStock() + "개"); // 재고를 왼쪽 정렬하여 10자리로 맞춤
+		}
+		System.out.println(String.format("%-20s", "상품명") + "\t" + String.format("%-10s", "가격") + "\t"
+				+ String.format("%-10s", "재고"));
+		System.out.println("--------------------------------------------");
+		System.out.println(formattedName2 + "\t" + formattedPrice2 + "\t" + formattedStock2);
+		System.out.println("============================================");
+		System.out.print("상품설명 ▶ ");
+		System.out.print(list.getDesc());
+		System.out.println("\n--------------------------------------------");
+		System.out.print("상품리뷰 ▼");
+		System.out.println("\n--------------------------------------------");
+	}
+
+	// 상품 구매 함수
+	public static void buyProduct(Product list) {
+		ProductFunction ps = new ProductFunction();
+		int num;
+		int price;
+		int stock;
+		String st;
+		if(list.getStock() == 0) {
+			st="품절";
+		}else {
+			st = list.getStock()+"개";
+		}
+		System.out.println("[" + list.getName() + "]  /  " + list.getPrice() + "원" + "  /  " + st);
+		if (list.getStock() == 0) {
+			System.out.println("품절된 상품으로 구매하실 수 없습니다.");
+		} else {
+			while (true) {
+				System.out.print("구매수량을 입력해주세요 > ");
+				stock = sc.nextInt();
+				if (stock > list.getStock()) {
+					System.out.println("재고가 부족합니다. 다시 입력해주세요");
+					continue;
+				} else {
+					while(true) {
+						System.out.print("정말 구매하시겠습니까? (y/n) > ");
+						String input = sc.next();
+						if(input.equals("n")) {
+							System.out.println("구매가 취소되었습니다.");
+							break;
+						}else if(input.equals("y")) {
+							list.stockCheck(stock);
+							int op = list.orderPrice(stock);
+							System.out.println(list.getName() + " " + stock + "개 주문 -> 총 " + op + "원");
+							System.out.println("구매가 완료되었습니다!");
+							break;
+						} else {
+							System.out.println("다시 입력해주세요.");
+							continue;
+						}
+					}
+					
+					
+				}
+				break;
+			}
+
+		}
+
+	}
+	
+	// 상품 번호 확인
+	public static boolean check(ArrayList<Product> list, int num) {
+		boolean sw = true;
+		if (num - 1 > list.size()) {
+			System.out.println("존재하지 않는 상품번호 입니다. 다시 입력해주세요");
+		} else {
+			sw = false;
+		}
+		return sw;
+	}
+}

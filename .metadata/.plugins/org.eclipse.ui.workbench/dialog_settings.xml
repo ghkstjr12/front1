@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="WorkbenchPreferenceDialog">
+		<item key="DIALOG_X_ORIGIN" value="24"/>
+		<item key="DIALOG_Y_ORIGIN" value="67"/>
+		<item key="DIALOG_WIDTH" value="1121"/>
+		<item key="DIALOG_HEIGHT" value="671"/>
+		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
+	</section>
+	<section name="ImportExportAction">
+		<item key="ImportExportPage.STORE_SELECTED_IMPORT_WIZARD_ID" value="org.eclipse.ui.wizards.import.FileSystem"/>
+		<item key="ImportExportPage.STORE_SELECTED_EXPORT_WIZARD_ID" value="org.eclipse.ui.wizards.export.FileSystem"/>
+		<list key="ImportExportPage.STORE_EXPANDED_IMPORT_CATEGORIES">
+			<item value="org.eclipse.ui.Basic"/>
+		</list>
+		<list key="ImportExportPage.STORE_EXPANDED_EXPORT_CATEGORIES">
+			<item value="org.eclipse.ui.Basic"/>
+		</list>
+	</section>
+	<section name="FileSystemImportWizard">
+		<item key="WizardFileSystemResourceImportPage1.STORE_OVERWRITE_EXISTING_RESOURCES_ID" value="false"/>
+		<item key="WizardFileSystemResourceImportPage1.STORE_CREATE_CONTAINER_STRUCTURE_ID" value="false"/>
+		<list key="WizardFileSystemResourceImportPage1.STORE_SOURCE_NAMES_ID">
+			<item value="C:\Users\hy120\Documents\카카오톡 받은 파일\day13\day13\실기"/>
+			<item value="C:\Users\hy120\Documents\카카오톡 받은 파일\day13\day13\성적관리"/>
+			<item value="C:\Users\hy120\Documents\카카오톡 받은 파일\day13\day13\string"/>
+			<item value="C:\Users\hy120\Documents\카카오톡 받은 파일\day13\day13\object"/>
+			<item value="C:\Users\hy120\Documents\카카오톡 받은 파일\day13\day13\arraylist"/>
+			<item value="C:\Users\hy120\Desktop\week2.day7"/>
+		</list>
+	</section>
+	<section name="ZipFileImportWizard">
+	</section>
+	<section name="FileSystemExportWizard">
+		<item key="WizardFileSystemResourceExportPage1.STORE_OVERWRITE_EXISTING_FILES_ID" value="false"/>
+		<item key="WizardFileSystemResourceExportPage1.STORE_CREATE_STRUCTURE_ID" value="false"/>
+		<item key="WizardFileSystemResourceExportPage1.STORE_RESOLVE_LINKED_RESOURCES_ID" value="false"/>
+		<list key="WizardFileSystemResourceExportPage1.STORE_DESTINATION_NAMES_ID">
+			<item value="C:\Users\hy120\Downloads"/>
+		</list>
+	</section>
+</section>
