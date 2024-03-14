@@ -20,7 +20,6 @@ public class Product {
 		stock -= num;
 	}
 
-
 	@Override
 	public String toString() {
 		 String formattedName = String.format("%-25s", name); // 이름을 왼쪽 정렬하여 25자리로 맞춤
@@ -38,17 +37,14 @@ public class Product {
 		int op = price * num;
 		return op;
 	}
-
-
+	
 	public String getName() {
 		return name;
 	}
 
-
 	public int getPrice() {
 		return price;
 	}
-
 
 	public int getStock() {
 		return stock;
